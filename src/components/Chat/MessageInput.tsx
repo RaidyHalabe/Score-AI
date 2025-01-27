@@ -1,6 +1,6 @@
 import React from 'react';
-import { Brain, Mic, ArrowRight } from 'lucide-react';
-
+import { Mic, ArrowRight } from 'lucide-react';
+import { BsRobot } from "react-icons/bs";
 interface MessageInputProps {
   prompt: string;
   onPromptChange: (value: string) => void;
@@ -21,7 +21,7 @@ export function MessageInput({
   return (
     <div className="relative">
       <div className="absolute left-4 top-1/2 -translate-y-1/2">
-        <Brain className="w-5 h-5 text-green-500" />
+        <BsRobot className="w-5 h-5 text-green-500" />
       </div>
       <input
         type="text"
