@@ -1,5 +1,5 @@
 import React from 'react';
-import { MessageSquare, MoreVertical, Pencil, Trash2, FolderPlus } from 'lucide-react';
+import { MessageSquare, MoreVertical } from 'lucide-react';
 import { Chat } from '../../types';
 
 interface ChatItemProps {

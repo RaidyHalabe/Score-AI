@@ -1,25 +1,28 @@
 import React from 'react';
 import { Message } from '../../types';
+import { LoadingMessage } from './LoadingMessage';
 
 interface MessageListProps {
   messages: Message[];
   messagesEndRef: React.RefObject<HTMLDivElement>;
+  isLoading?: boolean;
+  isCanceling?: boolean;
 }
 
-export function MessageList({ messages, messagesEndRef }: MessageListProps) {
+export function MessageList({ messages, messagesEndRef, isLoading, isCanceling }: MessageListProps) {
   return (
     <div className="flex-1 space-y-4 mb-4 overflow-y-auto">
       {messages.map((message) => (
         <div
           key={message.id}
-          className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
+          className={`flex ${message.isUser ? 'justify-end' : 'justify-start'} animate-fadeIn`}
         >
           <div
-            className={`max-w-[70%] rounded-xl p-3 ${
+            className={`relative max-w-[70%] rounded-2xl p-3 animate-slideIn ${
               message.isUser
                 ? 'bg-green-500 text-black'
                 : 'bg-[#252525] text-gray-200'
-            }`}
+            } ${!message.isUser ? 'after:absolute after:bottom-0 after:-left-2 after:border-8 after:border-transparent after:border-b-[#252525]' : ''}`}
           >
             <p className="text-sm">{message.content}</p>
             <span className="text-xs opacity-70 mt-1 block">
@@ -28,6 +31,7 @@ export function MessageList({ messages, messagesEndRef }: MessageListProps) {
           </div>
         </div>
       ))}
+      {isLoading && <LoadingMessage isCanceling={isCanceling} />}
       <div ref={messagesEndRef} />
     </div>
   );

@@ -1,8 +1,8 @@
 export interface Message {
   id: string;
   content: string;
-  timestamp: Date;
   isUser: boolean;
+  timestamp: Date;
 }
 
 export interface Folder {

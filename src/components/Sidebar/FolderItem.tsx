@@ -1,16 +1,7 @@
 import React from 'react';
 import { FolderClosed, MoreVertical, Pencil, Trash2 } from 'lucide-react';
-import { Folder } from '../../types';
 
-interface FolderItemProps {
-  folder: Folder;
-  selectedFolder: string | null;
-  activeDropdown: string | null;
-  onFolderClick: (id: string) => void;
-  onDeleteFolder: (id: string) => void;
-  setActiveDropdown: (id: string | null) => void;
-  dropdownRef: React.RefObject<HTMLDivElement>;
-}
+import { FolderItemProps } from '../Layout/Sidebar';
 
 export function FolderItem({
   folder,
@@ -20,9 +11,11 @@ export function FolderItem({
   onDeleteFolder,
   setActiveDropdown,
   dropdownRef,
+  onMoreClick,
 }: FolderItemProps) {
   const handleMoreClick = (e: React.MouseEvent) => {
     e.stopPropagation();
+    onMoreClick(e);
     setActiveDropdown(activeDropdown === folder.id ? null : folder.id);
   };
 
@@ -93,7 +86,7 @@ export function FolderItem({
             </button>
             <button
               onClick={() => {
-                onDeleteFolder(folder.id);
+                onDeleteFolder(folder.name);
                 setActiveDropdown(null);
               }}
               className="w-full flex items-center space-x-2 px-3 py-2 hover:bg-[#353535] text-left text-sm text-red-400 hover:text-red-300 transition-colors"

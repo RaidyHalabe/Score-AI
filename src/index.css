@@ -46,6 +46,14 @@
   }
 }
 
+.icon-sparkles-white {
+  color: white;
+}
+
+.icon-sparkles-black {
+  color: black
+}
+
 .animate-fadeIn {
   animation: fadeIn 0.15s ease-out forwards;
 }

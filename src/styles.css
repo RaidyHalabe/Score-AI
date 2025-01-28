@@ -1,0 +1,11 @@
+/* styles.css */
+
+/* Estiliza a barra de rolagem para torná-la invisível */
+::-webkit-scrollbar {
+  width: 0; /* Remove a largura da barra de rolagem */
+  background: transparent; /* Torna o fundo transparente */
+}
+
+::-webkit-scrollbar-thumb {
+  background: transparent; /* Torna o polegar da barra de rolagem transparente */
+}

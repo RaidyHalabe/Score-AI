@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Bot as Boot, Search, Plus, ChevronDown, Settings } from 'lucide-react';
-import { BsRobot } from "react-icons/bs";
+import { Search, Plus, ChevronDown, Settings } from 'lucide-react';
+import { IoSparkles } from 'react-icons/io5';
 
 import { FolderItem } from '../Sidebar/FolderItem';
 import { ChatItem } from '../Sidebar/ChatItem';
@@ -31,6 +31,17 @@ interface SidebarProps {
   onChatClick: (chat: Chat) => void;
   searchQuery: string;
   onSearchChange: (query: string) => void;
+}
+
+export interface FolderItemProps {
+  folder: Folder;
+  selectedFolder: string | null;
+  activeDropdown: string | null;
+  onFolderClick: (id: string) => void;
+  onDeleteFolder: (name: string) => void;
+  setActiveDropdown: (id: string | null) => void;
+  dropdownRef: React.RefObject<HTMLDivElement>;
+  onMoreClick: (e: React.MouseEvent) => void;
 }
 
 export function Sidebar({
@@ -81,11 +92,11 @@ export function Sidebar({
   }, [showChats, chats]);
 
   return (
-    <div className="w-80 flex flex-col h-[calc(100vh-2rem)] bg-[#1a1a1a] rounded-2xl overflow-hidden relative z-10">
+    <div className="w-80 flex flex-col h-[calc(100vh-2rem)] bg-[#1a1a1a] rounded-2xl overflow-hidden z-10 sticky top-4">
       <div className="px-3 py-2.5 border-b border-[#252525]">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <BsRobot  className="w-5 h-5 text-green-500" />
+            <IoSparkles className={`w-7 h-7 icon-sparkles-white`} />
             <span className="font-medium text-sm text-gray-200">Minhas Conversas</span>
           </div>
           <button 
@@ -144,7 +155,7 @@ export function Sidebar({
                   type="text"
                   value={newFolderName}
                   onChange={(e) => setNewFolderName(e.target.value)}
-                  placeholder="Folder name"
+                  placeholder="Nome da pasta"
                   className="flex-1 bg-transparent text-sm text-gray-200 placeholder-gray-500 focus:outline-none"
                   onKeyPress={(e) => e.key === 'Enter' && handleCreateFolder()}
                   autoFocus
@@ -168,6 +179,10 @@ export function Sidebar({
                 onDeleteFolder={onDeleteFolder}
                 setActiveDropdown={setActiveDropdown}
                 dropdownRef={dropdownRef}
+                onMoreClick={(e: React.MouseEvent) => {
+                  e.stopPropagation();
+                  handleMoreClick(e, folder.id);
+                }}
               />
             ))}
           </div>
