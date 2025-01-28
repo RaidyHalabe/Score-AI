@@ -41,12 +41,12 @@ export function Suggestions({ onSuggestionClick }: SuggestionsProps) {
     },
     {
       title: "Probabilidades",
-      description: "Chances de vitória PSG vs Man City",
+      description: "Chances de vitória Paris Saint-Germain vs Manchester City",
       query: "Quais são as chances de vitória na partida entre Paris Saint-Germain vs Manchester City?"
     },
     {
       title: "Desempenho",
-      description: "Análise de desempenho PSG vs Man City",
+      description: "Análise de desempenho Paris Saint-Germain vs Manchester City",
       query: "Como está o desempenho dos times na partida do Paris Saint-Germain vs Manchester City?"
     }
   ];
