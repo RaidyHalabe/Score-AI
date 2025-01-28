@@ -1,4 +1,3 @@
-import React from 'react';
 import { GiSoccerBall, GiTrophyCup, GiCalendar } from "react-icons/gi";
 
 interface SuggestionProps {

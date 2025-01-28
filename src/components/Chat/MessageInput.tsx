@@ -1,5 +1,5 @@
 import React from 'react';
-import { IoSparkles } from 'react-icons/io5';
+import { HiOutlineSparkles } from 'react-icons/hi';
 import { ArrowRight, Square } from 'lucide-react'; // Adicionei as importações
 
 interface MessageInputProps {
@@ -28,7 +28,7 @@ export function MessageInput({
   return (
     <div className="relative">
       <div className="absolute left-4 top-1/2 -translate-y-1/2">
-        <IoSparkles className={`w-5 h-5 ${iconColor}`} />
+        <HiOutlineSparkles className={`w-5 h-5 ${iconColor}`} />
       </div>
       <input
         type="text"

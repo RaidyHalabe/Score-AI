@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Search, Plus, ChevronDown, Settings } from 'lucide-react';
-import { IoSparkles } from 'react-icons/io5';
+import { Search, ChevronDown, Settings, Plus } from 'lucide-react';
+import { RiRobot2Line } from 'react-icons/ri';
 
 import { FolderItem } from '../Sidebar/FolderItem';
 import { ChatItem } from '../Sidebar/ChatItem';
@@ -96,7 +96,7 @@ export function Sidebar({
       <div className="px-3 py-2.5 border-b border-[#252525]">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <IoSparkles className={`w-7 h-7 icon-sparkles-white`} />
+            <RiRobot2Line className="w-7 h-7 icon-sparkles-white" />
             <span className="font-medium text-sm text-gray-200">Minhas Conversas</span>
           </div>
           <button 

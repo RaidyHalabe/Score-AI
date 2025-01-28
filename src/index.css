@@ -46,6 +46,10 @@
   }
 }
 
+.icon-sparkles-green {
+color: bg-green-500;
+}
+
 .icon-sparkles-white {
   color: white;
 }
@@ -74,4 +78,32 @@
 
 .section-content.expanded {
   opacity: 1;
+}
+
+/* Adicionar classes utilitárias para responsividade */
+@layer utilities {
+  .scrollbar-hidden {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Ajustes para telas pequenas */
+@media (max-width: 640px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* Ajustes para telas médias */
+@media (max-width: 1024px) {
+  .sidebar-collapsed {
+    width: 0;
+    overflow: hidden;
+  }
 }

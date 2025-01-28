@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
 
-router.get('/games/today', async (req, res) => {
+router.get('/games/today', async (_req, res) => {
   try {
     const games = [
       {
