@@ -51,9 +51,9 @@ export function WelcomeScreen({
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 xl:gap-4 mb-3 xl:mb-4">
-            {suggestions.map((suggestion, index) => (
+            {suggestions.map((suggestion) => (
               <button
-                key={index}
+                key={suggestion.title}
                 onClick={() => {
                   onPromptChange(suggestion.description);
                   onSendMessage();

@@ -1,16 +1,25 @@
 import React from 'react';
-import { FolderClosed, MoreVertical, Pencil, Trash2, FolderOpen } from 'lucide-react';
+import { FolderClosed, MoreVertical, FolderOpen } from 'lucide-react';
 
-import { FolderItemProps } from '../Layout/Sidebar';
+interface FolderItemProps {
+  folder: {
+    id: string;
+    name: string;
+    chats: string[];
+  };
+  selectedFolder: string | null;
+  activeDropdown: string | null;
+  onFolderClick: (id: string) => void;
+  onDeleteFolder: (id: string) => void;
+  setActiveDropdown: (id: string | null) => void;
+  dropdownRef: React.RefObject<HTMLDivElement>;
+  onMoreClick: (e: React.MouseEvent) => void;
+}
 
 export function FolderItem({
   folder,
   selectedFolder,
-  activeDropdown,
   onFolderClick,
-  onDeleteFolder,
-  setActiveDropdown,
-  dropdownRef,
   onMoreClick,
 }: FolderItemProps) {
   const isEmpty = folder.chats.length === 0;
@@ -18,7 +27,6 @@ export function FolderItem({
   const handleMoreClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     onMoreClick(e);
-    setActiveDropdown(activeDropdown === folder.id ? null : folder.id);
   };
 
   return (
@@ -71,43 +79,13 @@ export function FolderItem({
           </div>
         </div>
 
-        <div className="relative flex-shrink-0">
-          <button
-            onClick={handleMoreClick}
-            className={`p-1.5 rounded-lg transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 ${
-              selectedFolder === folder.id
-                ? 'hover:bg-green-500/20'
-                : 'hover:bg-[#353535] text-gray-400 hover:text-gray-300'
-            }`}
-          >
-            <MoreVertical className="w-4 h-4" />
-          </button>
-
-          {activeDropdown === folder.id && (
-            <div 
-              ref={dropdownRef}
-              className="absolute right-0 mt-1 w-48 bg-[#252525] rounded-lg shadow-lg py-1 z-10 animate-fadeIn border border-[#353535]"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button 
-                className="w-full flex items-center space-x-2 px-3 py-2 hover:bg-[#353535] text-left text-sm text-gray-300 hover:text-gray-200 transition-colors"
-              >
-                <Pencil className="w-4 h-4" />
-                <span>Renomear pasta</span>
-              </button>
-              <button
-                onClick={() => {
-                  onDeleteFolder(folder.name);
-                  setActiveDropdown(null);
-                }}
-                className="w-full flex items-center space-x-2 px-3 py-2 hover:bg-[#353535] text-left text-sm text-red-400 hover:text-red-300 transition-colors"
-              >
-                <Trash2 className="w-4 h-4" />
-                <span>Excluir pasta</span>
-              </button>
-            </div>
-          )}
-        </div>
+        <button
+          onClick={handleMoreClick}
+          className="p-1.5 rounded-lg hover:bg-[#353535] text-gray-400 hover:text-green-500 
+            transition-all duration-200 opacity-60 hover:opacity-100 relative z-10"
+        >
+          <MoreVertical className="w-4 h-4" />
+        </button>
       </div>
     </div>
   );

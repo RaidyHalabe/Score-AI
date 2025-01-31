@@ -13,10 +13,10 @@ export function ChatContainer() {
 
     // Adiciona mensagem do usuário
     const userMessage: Message = {
-      id: Date.now().toString(),
+      id: String(Date.now()),
       content: prompt,
-      isUser: true,
-      timestamp: new Date()
+      role: 'user',
+      createdAt: new Date()
     };
     setMessages(prev => [...prev, userMessage]);
 
@@ -35,8 +35,8 @@ export function ChatContainer() {
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
         content: data.res2,
-        isUser: false,
-        timestamp: new Date()
+        role: 'assistant',
+        createdAt: new Date()
       };
       setMessages(prev => [...prev, botMessage]);
     } catch (error) {

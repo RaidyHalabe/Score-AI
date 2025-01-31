@@ -14,11 +14,16 @@ export default {
         slideIn: {
           '0%': { transform: 'translateY(10px)', opacity: '0' },
           '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        slideUp: {
+          '0%': { transform: 'translateY(20px)' },
+          '100%': { transform: 'translateY(0)' },
         }
       },
       animation: {
-        fadeIn: 'fadeIn 0.3s ease-in-out',
+        fadeIn: 'fadeIn 0.3s ease-out forwards',
         slideIn: 'slideIn 0.3s ease-out',
+        slideUp: 'slideUp 0.3s ease-out forwards',
       },
     },
   },

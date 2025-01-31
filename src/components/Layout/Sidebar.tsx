@@ -19,7 +19,7 @@ interface SidebarProps {
   dropdownRef: React.RefObject<HTMLDivElement>;
   editChatRef: React.RefObject<HTMLInputElement>;
   onFolderClick: (id: string) => void;
-  onDeleteFolder: (name: string) => void;
+  onDeleteFolder: (id: string) => void;
   setActiveDropdown: (id: string | null) => void;
   setIsCreatingFolder: (value: boolean) => void;
   setNewFolderName: (value: string) => void;
@@ -27,7 +27,7 @@ interface SidebarProps {
   handleMoreClick: (e: React.MouseEvent, id: string) => void;
   onRenameChat: (id: string) => void;
   setEditingChatTitle: (title: string) => void;
-  handleNewChat: () => void;
+  handleNewChat: (addToFolder: boolean) => void;
   onChatClick: (chat: Chat) => void;
   searchQuery: string;
   onSearchChange: (query: string) => void;
@@ -95,7 +95,7 @@ export function Sidebar({
     <div className="w-80 flex flex-col h-[calc(100vh-2rem)] bg-[#1a1a1a] rounded-2xl overflow-hidden z-10 sticky top-4">
       <div className="px-3 py-2.5 border-b border-[#252525]">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 lg:ml-0 ml-12">
             <RiRobot2Line className="w-7 h-7 icon-sparkles-white" />
             <span className="font-medium text-sm text-gray-200">Minhas Conversas</span>
           </div>
@@ -115,7 +115,7 @@ export function Sidebar({
             type="text"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Pesquisar"
+            placeholder="Pesquisar chats e pastas..."
             className="w-full bg-[#252525] rounded-lg pl-9 pr-4 py-2 text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-green-500"
           />
         </div>
@@ -190,7 +190,7 @@ export function Sidebar({
       </div>
 
       {/* Chats Section */}
-      <div className="px-3 py-2 flex-1 overflow-hidden">
+      <div className="px-3 py-2 flex-1 overflow-y-auto">
         <div className="flex items-center justify-between mb-2">
           <button 
             onClick={() => setShowChats(!showChats)}
@@ -206,7 +206,7 @@ export function Sidebar({
           ref={chatsRef}
           className={`section-content ${showChats ? 'expanded' : 'collapsed'}`}
         >
-          <div className="space-y-1.5">
+          <div className="space-y-1">
             {chats.map((chat) => (
               <div key={chat.id} onClick={() => onChatClick(chat)}>
                 <ChatItem
@@ -227,7 +227,7 @@ export function Sidebar({
       {/* New Chat Button */}
       <div className="p-3 border-t border-[#252525]">
         <button 
-          onClick={handleNewChat}
+          onClick={() => handleNewChat(false)}
           className="group relative flex items-center justify-between w-full bg-green-500 hover:bg-green-600 text-black font-medium rounded-lg py-2.5 px-4 transition-colors"
         >
           <span>Nova conversa</span>

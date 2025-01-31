@@ -22,7 +22,7 @@ export function MessageList({ messages, messagesEndRef, isLoading, isCanceling }
               message.isUser
                 ? 'bg-green-500 text-black'
                 : 'bg-[#252525] text-gray-200'
-            } ${!message.isUser ? 'after:absolute after:bottom-0 after:-left-2 after:border-8 after:border-transparent after:border-b-[#252525]' : ''}`}
+            }`}
           >
             <p className="text-sm">{message.content}</p>
             <span className="text-xs opacity-70 mt-1 block">

@@ -46,6 +46,17 @@
   }
 }
 
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
 .icon-sparkles-green {
 color: bg-green-500;
 }
@@ -80,6 +91,14 @@ color: bg-green-500;
   opacity: 1;
 }
 
+.animate-slide-in {
+  animation: slideInLeft 0.3s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
 /* Adicionar classes utilitárias para responsividade */
 @layer utilities {
   .scrollbar-hidden {
@@ -106,4 +125,26 @@ color: bg-green-500;
     width: 0;
     overflow: hidden;
   }
+}
+
+/* Adicione essas classes para a transição do overlay */
+.sidebar-overlay {
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease-in-out;
+}
+
+.sidebar-overlay-enter {
+  opacity: 0;
+}
+
+.sidebar-overlay-enter-active {
+  opacity: 1;
+}
+
+.sidebar-overlay-exit {
+  opacity: 1;
+}
+
+.sidebar-overlay-exit-active {
+  opacity: 0;
 }

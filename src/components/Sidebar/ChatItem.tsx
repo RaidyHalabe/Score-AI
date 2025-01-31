@@ -52,14 +52,16 @@ export function ChatItem({
         </div>
       </div>
 
-      <div className="relative flex-shrink-0">
-        <button
-          onClick={(e) => handleMoreClick(e, chat.id)}
-          className="p-1.5 rounded-lg hover:bg-[#353535] text-gray-400 hover:text-gray-300 transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
-        >
-          <MoreVertical className="w-4 h-4" />
-        </button>
-      </div>
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          handleMoreClick(e, chat.id);
+        }}
+        className="p-1.5 rounded-lg hover:bg-[#353535] text-gray-400 hover:text-green-500 
+          transition-all duration-200 opacity-60 hover:opacity-100 relative z-10"
+      >
+        <MoreVertical className="w-4 h-4" />
+      </button>
     </div>
   );
 }
