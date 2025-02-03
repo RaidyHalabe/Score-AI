@@ -15,18 +15,18 @@ export function MessageList({ messages, messagesEndRef, isLoading, isCanceling }
       {messages.map((message) => (
         <div
           key={message.id}
-          className={`flex ${message.isUser ? 'justify-end' : 'justify-start'} animate-fadeIn`}
+          className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'} animate-fadeIn`}
         >
           <div
             className={`relative max-w-[70%] rounded-2xl p-3 animate-slideIn ${
-              message.isUser
+              message.role === 'user'
                 ? 'bg-green-500 text-black'
                 : 'bg-[#252525] text-gray-200'
             }`}
           >
             <p className="text-sm">{message.content}</p>
             <span className="text-xs opacity-70 mt-1 block">
-              {message.timestamp.toLocaleTimeString()}
+              {message.createdAt.toLocaleTimeString()}
             </span>
           </div>
         </div>

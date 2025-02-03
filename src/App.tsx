@@ -703,8 +703,8 @@ function App() {
         {/* Content Area */}
         <div className="flex-1 relative flex flex-col max-w-[1450px] mx-auto w-full">
           {selectedFolder && !showChat ? (
-            <div className="h-full overflow-y-auto lg:ml-0 ml-16">
-              <div className="flex items-center justify-between mb-8 mt-1.5">
+            <div className="h-full overflow-y-auto lg:ml-0 ml-0">
+              <div className="flex items-center justify-between mb-8 mt-1.5 ml-14">
                 <div className="flex items-center space-x-3">
                   <button 
                     onClick={handleBackClick}
@@ -712,19 +712,19 @@ function App() {
                   >
                     <ArrowLeft className="w-5 h-5 text-gray-400" />
                   </button>
-                  <h2 className="text-xl font-medium text-gray-200">Conteúdo da Pasta</h2>
+                  <h2 className="text-xl font-medium text-gray-200 ">Conteúdo da Pasta</h2>
                 </div>
                 <div className="flex gap-2">
                   <button
                     onClick={() => setShowAddChatModal(true)}
-                    className="flex items-center space-x-2 px-4 py-2 bg-[#252525] rounded-lg hover:bg-[#353535] transition-colors"
+                    className="hidden sm:flex items-center space-x-2 px-4 py-2 bg-[#252525] rounded-lg hover:bg-[#353535] transition-colors"
                   >
                     <Plus className="w-4 h-4 text-green-500" />
                     <span className="text-sm text-gray-300">Adicionar conversas</span>
                   </button>
                   <button
                     onClick={() => handleNewChat(true)}
-                    className="flex items-center space-x-2 px-4 py-2 bg-green-500 rounded-lg hover:bg-green-600 transition-colors"
+                    className="hidden sm:flex items-center space-x-2 px-4 py-2 bg-green-500 rounded-lg hover:bg-green-600 transition-colors"
                   >
                     <MessageSquare className="w-4 h-4 text-white" />
                     <span className="text-sm text-white">Nova conversa</span>
@@ -819,7 +819,7 @@ function App() {
           ) : showChat && selectedChat ? (
             <>
               {/* Chat Header */}
-              <div className="sticky  z-10 flex items-center justify-between mt-1.5 pb-4 lg:ml-0 ml-16">
+              <div className="sticky z-10 flex items-center justify-between py-3 lg:ml-0 ml-16 pt-1">
                 <div className="flex items-center space-x-3">
                   <button 
                     onClick={handleBackClick}
@@ -828,10 +828,12 @@ function App() {
                     <ArrowLeft className="w-5 h-5 text-gray-400" />
                   </button>
                   <div className="flex items-center space-x-2">
-                    <h2 className="text-xl font-medium text-gray-200">
+                    <h2 className="text-lg font-medium text-gray-200 truncate max-w-[300px]">
                       {selectedChat?.title || 'Nova conversa'}
                     </h2>
-                    <span className="px-2 py-0.5 text-xs font-medium bg-green-500/10 text-green-500 rounded">Score AI</span>
+                    <span className="px-2 py-0.5 text-[10px] font-medium bg-green-500/10 text-green-500 rounded flex-shrink-0">
+                      Score AI
+                    </span>
                   </div>
                 </div>
                 <div className="flex space-x-2">
