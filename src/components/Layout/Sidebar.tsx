@@ -18,19 +18,20 @@ interface SidebarProps {
   createFolderRef: React.RefObject<HTMLDivElement>;
   dropdownRef: React.RefObject<HTMLDivElement>;
   editChatRef: React.RefObject<HTMLInputElement>;
-  onFolderClick: (id: string) => void;
-  onDeleteFolder: (id: string) => void;
+  onFolderClick: (folderId: string) => void;
+  onDeleteFolder: (folderId: string) => void;
   setActiveDropdown: (id: string | null) => void;
   setIsCreatingFolder: (value: boolean) => void;
   setNewFolderName: (value: string) => void;
   handleCreateFolder: () => void;
-  handleMoreClick: (e: React.MouseEvent, id: string) => void;
-  onRenameChat: (id: string) => void;
-  setEditingChatTitle: (title: string) => void;
-  handleNewChat: (addToFolder: boolean) => void;
+  handleMoreClick: (e: React.MouseEvent, chatId: string) => void;
+  onRenameChat: (chatId: string) => void;
+  setEditingChatTitle: (value: string) => void;
+  handleNewChat: (addToFolder?: boolean) => void;
   onChatClick: (chat: Chat) => void;
   searchQuery: string;
-  onSearchChange: (query: string) => void;
+  onSearchChange: (value: string) => void;
+  setShowSettings: (value: boolean) => void;
 }
 
 export interface FolderItemProps {
@@ -69,6 +70,7 @@ export function Sidebar({
   onChatClick,
   searchQuery,
   onSearchChange,
+  setShowSettings,
 }: SidebarProps) {
   const [showFolders, setShowFolders] = useState(true);
   const [showChats, setShowChats] = useState(true);
@@ -93,31 +95,30 @@ export function Sidebar({
 
   return (
     <div className="w-80 flex flex-col h-[calc(100vh-2rem)] bg-[#1a1a1a] rounded-2xl overflow-hidden z-10 sticky top-4">
-      <div className="px-3 py-2.5 border-b border-[#252525]">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2 lg:ml-0 ml-12">
-            <RiRobot2Line className="w-7 h-7 icon-sparkles-white" />
-            <span className="font-medium text-sm text-gray-200">Minhas Conversas</span>
-          </div>
-          <button 
-            className="p-1.5 rounded-lg hover:bg-[#353535] text-gray-400 hover:text-gray-300 transition-colors"
-            title="Configurações"
-          >
-            <Settings className="w-4 h-4" />
-          </button>
+      <div className="flex items-center justify-between px-3 py-2.5 border-b border-[#252525]">
+        <div className="flex items-center space-x-2">
+          <RiRobot2Line className="w-7 h-7 icon-sparkles-white" />
+          <span className="font-medium text-sm text-gray-200">Minhas Conversas</span>
         </div>
+        <button 
+          onClick={() => setShowSettings(true)}
+          className="p-1.5 hover:bg-[#252525] rounded-lg transition-colors"
+        >
+          <Settings className="w-4 h-4 text-gray-400 hover:text-green-500" />
+        </button>
       </div>
 
+      {/* Search */}
       <div className="px-3 py-2 border-b border-[#252525]">
         <div className="relative">
-          <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Pesquisar chats e pastas..."
-            className="w-full bg-[#252525] rounded-lg pl-9 pr-4 py-2 text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-green-500"
+            className="w-full bg-[#252525] text-gray-300 rounded-lg pl-9 pr-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-green-500"
           />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
         </div>
       </div>
 

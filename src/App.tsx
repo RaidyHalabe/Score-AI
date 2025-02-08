@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, KeyboardEvent, useMemo } from 'react';
 
-import { Save, Share, ArrowLeft, Plus, MessageSquare, X, Pencil, FolderPlus, ChevronRight, Trash2, Calendar, Clock } from 'lucide-react';
+import { Save, Share, ArrowLeft, Plus, MessageSquare, X, Pencil, FolderPlus, ChevronRight, Trash2, Calendar, Clock, User, Coins, Trash, Mail, LogOut } from 'lucide-react';
 
 import { Message, Folder, Chat } from './types';
 
@@ -11,6 +11,16 @@ import { MessageList } from './components/Chat/MessageList';
 import { MessageInput } from './components/Chat/MessageInput';
 
 import { WelcomeScreen } from './components/Chat/WelcomeScreen';
+
+import { Footer } from './components/Layout/Footer';
+
+import { LandingPage } from './components/Landing/LandingPage';
+
+import { SupportChat } from './components/Support/SupportChat';
+
+import { CoinsScreen } from './components/Coins/CoinsScreen';
+
+import { SettingsModal } from './components/Settings/SettingsModal';
 
 import './styles.css';
 
@@ -59,6 +69,18 @@ function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
+
+  const [showLanding, setShowLanding] = useState(true);
+
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+
+  const [showSupportChat, setShowSupportChat] = useState(false);
+
+  const [showCoinsScreen, setShowCoinsScreen] = useState(false);
+
+  const [showSettings, setShowSettings] = useState(false);
+
+  const [coins, setCoins] = useState(100);
 
 
 
@@ -539,40 +561,26 @@ function App() {
 
 
   useEffect(() => {
-
     function handleClickOutside(event: MouseEvent) {
-
       if (createFolderRef.current && !createFolderRef.current.contains(event.target as Node)) {
-
         setIsCreatingFolder(false);
-
         setNewFolderName('');
-
       }
-
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-
         setActiveDropdown(null);
-
       }
-
       if (editChatRef.current && !editChatRef.current.contains(event.target as Node)) {
-
         setEditingChatId(null);
-
         setEditingChatTitle('');
-
       }
-
+      if (showProfileMenu && !(event.target as Element).closest('.profile-menu')) {
+        setShowProfileMenu(false);
+      }
     }
 
-
-
     document.addEventListener('mousedown', handleClickOutside);
-
     return () => document.removeEventListener('mousedown', handleClickOutside);
-
-  }, []);
+  }, [showProfileMenu]);
 
 
 
@@ -609,6 +617,31 @@ function App() {
     : [];
 
 
+
+  const handleStartClick = () => {
+    setShowLanding(false);
+    setShowWelcomeScreen(true);
+  };
+
+  const handleDeleteAllChats = () => {
+    setChats([]);
+    setMessages([]);
+    setSelectedChat(null);
+    setShowChat(false);
+    setShowWelcomeScreen(true);
+  };
+
+  if (showLanding) {
+    return <LandingPage onStartClick={handleStartClick} />;
+  }
+
+  if (showCoinsScreen) {
+    return <CoinsScreen 
+      onBack={() => setShowCoinsScreen(false)} 
+      currentCoins={coins}
+      onBuyCoins={(amount) => setCoins(coins + amount)}
+    />;
+  }
 
   return (
     <div className="min-h-screen bg-black text-gray-200 relative p-4">
@@ -688,6 +721,7 @@ function App() {
               onChatClick={handleChatClick}
               searchQuery={searchQuery}
               onSearchChange={setSearchQuery}
+              setShowSettings={setShowSettings}
             />
           </div>
         </div>
@@ -806,6 +840,10 @@ function App() {
                     ))}
                 </div>
               )}
+
+              <div className="mt-8">
+                <Footer />
+              </div>
             </div>
           ) : showWelcomeScreen ? (
             <div className="h-full lg:ml-0 ml-8">
@@ -815,6 +853,10 @@ function App() {
                 onSendMessage={handleSendMessage}
                 onKeyPress={handleKeyPress}
               />
+
+              <div className="mt-8">
+                <Footer />
+              </div>
             </div>
           ) : showChat && selectedChat ? (
             <>
@@ -836,13 +878,19 @@ function App() {
                     </span>
                   </div>
                 </div>
-                <div className="flex space-x-2">
-                  <button className="p-2 hover:bg-[#252525] rounded-lg transition-colors">
-                    <Save className="w-5 h-5 text-gray-400" />
-                  </button>
-                  <button className="p-2 hover:bg-[#252525] rounded-lg transition-colors">
-                    <Share className="w-5 h-5 text-gray-400" />
-                  </button>
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-2 px-3 py-1.5 bg-[#252525] rounded-lg">
+                    <Coins className="w-4 h-4 text-green-500" />
+                    <span className="text-sm text-gray-300">{coins}</span>
+                  </div>
+                  <div className="flex space-x-2">
+                    <button className="p-2 hover:bg-[#252525] rounded-lg transition-colors">
+                      <Save className="w-5 h-5 text-gray-400" />
+                    </button>
+                    <button className="p-2 hover:bg-[#252525] rounded-lg transition-colors">
+                      <Share className="w-5 h-5 text-gray-400" />
+                    </button>
+                  </div>
                 </div>
               </div>
 
@@ -1024,6 +1072,89 @@ function App() {
           </button>
         </div>
       )}
+
+      {/* Profile button for mobile */}
+      <div className="fixed top-5 right-6 z-50 profile-menu">
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            if (showSupportChat) {
+              setShowSupportChat(false);
+              setTimeout(() => {
+                setShowProfileMenu(!showProfileMenu);
+              }, 200); // Pequeno delay para a animação de fechamento do chat
+            } else {
+              setShowProfileMenu(!showProfileMenu);
+            }
+          }}
+          className="p-2 bg-[#252525] rounded-lg hover:bg-[#353535] transition-colors border border-transparent hover:border-green-500/20"
+        >
+          <User className="w-5 h-5 text-gray-400 hover:text-green-500" />
+        </button>
+
+        {/* Profile Dropdown Menu */}
+        {showProfileMenu && (
+          <div 
+            className="absolute right-0 mt-2 w-56 bg-[#1a1a1a] rounded-lg shadow-lg py-2 border border-[#252525]
+              animate-slideIn"
+          >
+            <button
+              onClick={() => {
+                setShowCoinsScreen(true);
+                setShowProfileMenu(false);
+              }}
+              className="w-full flex items-center space-x-3 px-5 py-3 text-sm text-gray-400 hover:bg-[#252525] hover:text-green-500
+                transition-all duration-200"
+            >
+              <Coins className="w-4 h-4" />
+              <span>Moedas: {coins}</span>
+            </button>
+
+            <button
+              onClick={() => {
+                handleDeleteAllChats();
+                setShowProfileMenu(false);
+              }}
+              className="w-full flex items-center space-x-3 px-5 py-3 text-sm text-gray-400 hover:bg-[#252525] hover:text-green-500"
+            >
+              <Trash className="w-4 h-4" />
+              <span>Apagar todos os chats</span>
+            </button>
+
+            <button
+              onClick={() => {
+                setShowSupportChat(true);
+                setShowProfileMenu(false);
+              }}
+              className="w-full flex items-center space-x-3 px-5 py-3 text-sm text-gray-400 hover:bg-[#252525] hover:text-green-500"
+            >
+              <Mail className="w-4 h-4" />
+              <span>Contate-nos</span>
+            </button>
+
+            <div className="border-t border-[#252525] my-2"></div>
+
+            <button
+              onClick={() => {
+                // Implementar lógica de logout
+                setShowProfileMenu(false);
+              }}
+              className="w-full flex items-center space-x-3 px-5 py-3 text-sm text-red-400 hover:bg-[#252525] hover:text-red-500"
+            >
+              <LogOut className="w-4 h-4" />
+              <span>Logout</span>
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Support Chat */}
+      {showSupportChat && (
+        <SupportChat onClose={() => setShowSupportChat(false)} />
+      )}
+
+      {/* Settings Modal */}
+      {showSettings && <SettingsModal onClose={() => setShowSettings(false)} />}
     </div>
   );
 }
