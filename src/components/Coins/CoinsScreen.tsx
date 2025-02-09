@@ -1,4 +1,5 @@
 import { ArrowLeft, Coins } from 'lucide-react';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 interface CoinsScreenProps {
   onBack: () => void;
@@ -7,6 +8,8 @@ interface CoinsScreenProps {
 }
 
 export const CoinsScreen = ({ onBack, currentCoins, onBuyCoins }: CoinsScreenProps) => {
+  const { t } = useLanguage();
+
   return (
     <div className="min-h-screen bg-black">
       {/* Background effects */}
@@ -24,47 +27,47 @@ export const CoinsScreen = ({ onBack, currentCoins, onBuyCoins }: CoinsScreenPro
 
       <div className="relative z-10 max-w-3xl mx-auto px-4 py-16">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-green-500 mb-4">Suas Moedas</h2>
+          <h2 className="text-4xl font-bold text-green-500 mb-4">{t('common.coins.title')}</h2>
           <div className="flex items-center justify-center gap-3 text-2xl text-white">
             <Coins className="w-8 h-8 text-green-500" />
-            <span>{currentCoins} moedas</span>
+            <span>{t('common.coins.coins').replace('{0}', currentCoins.toString())}</span>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-[#1a1a1a] p-6 rounded-2xl border border-[#252525] hover:border-green-500/20 transition-colors text-center">
-            <div className="text-2xl font-bold text-white mb-2">100 moedas</div>
-            <div className="text-green-500 text-lg mb-4">R$ 10,00</div>
+            <div className="text-2xl font-bold text-white mb-2">{t('common.coins.coins').replace('{0}', '100')}</div>
+            <div className="text-green-500 text-lg mb-4">{t('common.coins.price').replace('{0}', '10,00')}</div>
             <button 
               className="w-full py-2 bg-[#252525] hover:bg-[#353535] text-white rounded-lg transition-colors"
               onClick={() => onBuyCoins(100)}
             >
-              Comprar
+              {t('common.coins.buy')}
             </button>
           </div>
 
           <div className="bg-[#1a1a1a] p-6 rounded-2xl border border-green-500 hover:border-green-400 transition-colors text-center relative">
             <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-green-500 text-black text-sm font-medium px-3 py-1 rounded-full">
-              Melhor Valor
+              {t('common.coins.bestValue')}
             </div>
-            <div className="text-2xl font-bold text-white mb-2">300 moedas</div>
-            <div className="text-green-500 text-lg mb-4">R$ 25,00</div>
+            <div className="text-2xl font-bold text-white mb-2">{t('common.coins.coins').replace('{0}', '300')}</div>
+            <div className="text-green-500 text-lg mb-4">{t('common.coins.price').replace('{0}', '25,00')}</div>
             <button 
               className="w-full py-2 bg-green-500 hover:bg-green-600 text-black rounded-lg transition-colors"
               onClick={() => onBuyCoins(300)}
             >
-              Comprar
+              {t('common.coins.buy')}
             </button>
           </div>
 
           <div className="bg-[#1a1a1a] p-6 rounded-2xl border border-[#252525] hover:border-green-500/20 transition-colors text-center">
-            <div className="text-2xl font-bold text-white mb-2">500 moedas</div>
-            <div className="text-green-500 text-lg mb-4">R$ 40,00</div>
+            <div className="text-2xl font-bold text-white mb-2">{t('common.coins.coins').replace('{0}', '500')}</div>
+            <div className="text-green-500 text-lg mb-4">{t('common.coins.price').replace('{0}', '40,00')}</div>
             <button 
               className="w-full py-2 bg-[#252525] hover:bg-[#353535] text-white rounded-lg transition-colors"
               onClick={() => onBuyCoins(500)}
             >
-              Comprar
+              {t('common.coins.buy')}
             </button>
           </div>
         </div>

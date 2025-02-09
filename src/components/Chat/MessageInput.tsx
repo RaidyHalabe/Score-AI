@@ -1,6 +1,7 @@
 import React from 'react';
 import { HiOutlineSparkles } from 'react-icons/hi';
 import { ArrowRight, Square } from 'lucide-react'; // Adicionei as importações
+import { useLanguage } from '../../contexts/LanguageContext';
 
 interface MessageInputProps {
   prompt: string;
@@ -25,6 +26,8 @@ export function MessageInput({
   onCancel,
   iconColor = "text-green-500",
 }: MessageInputProps) {
+  const { t } = useLanguage();
+
   return (
     <div className="relative">
       <div className="absolute left-4 top-1/2 -translate-y-1/2">
@@ -35,7 +38,7 @@ export function MessageInput({
         value={prompt}
         onChange={(e) => onPromptChange(e.target.value)}
         onKeyPress={onKeyPress}
-        placeholder={placeholder}
+        placeholder={t('welcome.send')}
         disabled={isLoading}
         className={`w-full rounded-lg pl-12 pr-24 py-3 transition-all duration-300 ${
           darkMode 

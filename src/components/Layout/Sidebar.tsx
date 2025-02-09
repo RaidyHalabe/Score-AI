@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Search, ChevronDown, Settings, Plus } from 'lucide-react';
 import { RiRobot2Line } from 'react-icons/ri';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 import { FolderItem } from '../Sidebar/FolderItem';
 import { ChatItem } from '../Sidebar/ChatItem';
@@ -10,17 +11,20 @@ interface SidebarProps {
   folders: Folder[];
   chats: Chat[];
   selectedFolder: string | null;
-  activeDropdown: string | null;
+  activeChatDropdown: string | null;
+  activeFolderDropdown: string | null;
   isCreatingFolder: boolean;
   newFolderName: string;
   editingChatId: string | null;
   editingChatTitle: string;
   createFolderRef: React.RefObject<HTMLDivElement>;
-  dropdownRef: React.RefObject<HTMLDivElement>;
+  chatDropdownRef: React.RefObject<HTMLDivElement>;
+  folderDropdownRef: React.RefObject<HTMLDivElement>;
   editChatRef: React.RefObject<HTMLInputElement>;
   onFolderClick: (folderId: string) => void;
   onDeleteFolder: (folderId: string) => void;
-  setActiveDropdown: (id: string | null) => void;
+  setActiveChatDropdown: (id: string | null) => void;
+  setActiveFolderDropdown: (id: string | null) => void;
   setIsCreatingFolder: (value: boolean) => void;
   setNewFolderName: (value: string) => void;
   handleCreateFolder: () => void;
@@ -32,6 +36,8 @@ interface SidebarProps {
   searchQuery: string;
   onSearchChange: (value: string) => void;
   setShowSettings: (value: boolean) => void;
+  onRenameFolder: (folderId: string) => void;
+  onSaveRenamedFolder: () => void;
 }
 
 export interface FolderItemProps {
@@ -43,23 +49,28 @@ export interface FolderItemProps {
   setActiveDropdown: (id: string | null) => void;
   dropdownRef: React.RefObject<HTMLDivElement>;
   onMoreClick: (e: React.MouseEvent) => void;
+  onRenameFolder: (folderId: string) => void;
+  onSaveRenamedFolder: () => void;
 }
 
 export function Sidebar({
   folders,
   chats,
   selectedFolder,
-  activeDropdown,
+  activeChatDropdown,
+  activeFolderDropdown,
   isCreatingFolder,
   newFolderName,
   editingChatId,
   editingChatTitle,
   createFolderRef,
-  dropdownRef,
+  chatDropdownRef,
+  folderDropdownRef,
   editChatRef,
   onFolderClick,
   onDeleteFolder,
-  setActiveDropdown,
+  setActiveChatDropdown,
+  setActiveFolderDropdown,
   setIsCreatingFolder,
   setNewFolderName,
   handleCreateFolder,
@@ -71,11 +82,14 @@ export function Sidebar({
   searchQuery,
   onSearchChange,
   setShowSettings,
+  onRenameFolder,
+  onSaveRenamedFolder,
 }: SidebarProps) {
   const [showFolders, setShowFolders] = useState(true);
   const [showChats, setShowChats] = useState(true);
   const foldersRef = useRef<HTMLDivElement>(null);
   const chatsRef = useRef<HTMLDivElement>(null);
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (foldersRef.current) {
@@ -98,7 +112,7 @@ export function Sidebar({
       <div className="flex items-center justify-between px-3 py-2.5 border-b border-[#252525]">
         <div className="flex items-center space-x-2">
           <RiRobot2Line className="w-7 h-7 icon-sparkles-white" />
-          <span className="font-medium text-sm text-gray-200">Minhas Conversas</span>
+          <span className="font-medium text-sm text-gray-200">{t('sidebar.myChats')}</span>
         </div>
         <button 
           onClick={() => setShowSettings(true)}
@@ -115,7 +129,7 @@ export function Sidebar({
             type="text"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Pesquisar chats e pastas..."
+            placeholder={t('sidebar.search')}
             className="w-full bg-[#252525] text-gray-300 rounded-lg pl-9 pr-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-green-500"
           />
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
@@ -132,7 +146,7 @@ export function Sidebar({
             <div className="transition-transform duration-300" style={{ transform: showFolders ? 'rotate(0deg)' : 'rotate(-90deg)' }}>
               <ChevronDown className="w-4 h-4" />
             </div>
-            <span>Pastas</span>
+            <span>{t('sidebar.folders')}</span>
           </button>
           <button 
             onClick={() => setIsCreatingFolder(true)}
@@ -156,7 +170,7 @@ export function Sidebar({
                   type="text"
                   value={newFolderName}
                   onChange={(e) => setNewFolderName(e.target.value)}
-                  placeholder="Nome da pasta"
+                  placeholder={t('sidebar.folderName')}
                   className="flex-1 bg-transparent text-sm text-gray-200 placeholder-gray-500 focus:outline-none"
                   onKeyPress={(e) => e.key === 'Enter' && handleCreateFolder()}
                   autoFocus
@@ -175,15 +189,13 @@ export function Sidebar({
                 key={folder.id}
                 folder={folder}
                 selectedFolder={selectedFolder}
-                activeDropdown={activeDropdown}
+                activeDropdown={activeFolderDropdown}
                 onFolderClick={onFolderClick}
                 onDeleteFolder={onDeleteFolder}
-                setActiveDropdown={setActiveDropdown}
-                dropdownRef={dropdownRef}
-                onMoreClick={(e: React.MouseEvent) => {
-                  e.stopPropagation();
-                  handleMoreClick(e, folder.id);
-                }}
+                setActiveDropdown={setActiveFolderDropdown}
+                dropdownRef={folderDropdownRef}
+                onRenameFolder={onRenameFolder}
+                onSaveRenamedFolder={onSaveRenamedFolder}
               />
             ))}
           </div>
@@ -200,7 +212,7 @@ export function Sidebar({
             <div className="transition-transform duration-300" style={{ transform: showChats ? 'rotate(0deg)' : 'rotate(-90deg)' }}>
               <ChevronDown className="w-4 h-4" />
             </div>
-            <span>Conversas</span>
+            <span>{t('sidebar.chats')}</span>
           </button>
         </div>
         <div 
@@ -218,6 +230,8 @@ export function Sidebar({
                   onRenameChat={onRenameChat}
                   setEditingChatTitle={setEditingChatTitle}
                   handleMoreClick={handleMoreClick}
+                  activeDropdown={activeChatDropdown}
+                  dropdownRef={chatDropdownRef}
                 />
               </div>
             ))}
@@ -231,7 +245,7 @@ export function Sidebar({
           onClick={() => handleNewChat(false)}
           className="group relative flex items-center justify-between w-full bg-green-500 hover:bg-green-600 text-black font-medium rounded-lg py-2.5 px-4 transition-colors"
         >
-          <span>Nova conversa</span>
+          <span>{t('sidebar.newChat')}</span>
           <div className="flex items-center justify-center w-8 h-8 bg-white rounded-md">
             <Plus className="w-6 h-6" />
           </div>

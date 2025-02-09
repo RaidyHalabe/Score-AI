@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, KeyboardEvent, useMemo } from 'react';
 
-import { Save, Share, ArrowLeft, Plus, MessageSquare, X, Pencil, FolderPlus, ChevronRight, Trash2, Calendar, Clock, User, Coins, Trash, Mail, LogOut } from 'lucide-react';
+import { Save, Share, ArrowLeft, Plus, MessageSquare, X, Pencil, FolderPlus, ChevronRight, Trash2, Calendar, Clock, User, Coins, Trash, LogOut } from 'lucide-react';
 
 import { Message, Folder, Chat } from './types';
 
@@ -12,15 +12,17 @@ import { MessageInput } from './components/Chat/MessageInput';
 
 import { WelcomeScreen } from './components/Chat/WelcomeScreen';
 
-import { Footer } from './components/Layout/Footer';
-
 import { LandingPage } from './components/Landing/LandingPage';
-
-import { SupportChat } from './components/Support/SupportChat';
 
 import { CoinsScreen } from './components/Coins/CoinsScreen';
 
 import { SettingsModal } from './components/Settings/SettingsModal';
+
+import { LanguageProvider } from './contexts/LanguageContext';
+
+import { useLanguage } from './contexts/LanguageContext';
+
+import { ThemeProvider } from './contexts/ThemeContext';
 
 import './styles.css';
 
@@ -34,7 +36,9 @@ function App() {
 
   const [messages, setMessages] = useState<Message[]>([]);
 
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [activeChatDropdown, setActiveChatDropdown] = useState<string | null>(null);
+
+  const [activeFolderDropdown, setActiveFolderDropdown] = useState<string | null>(null);
 
   const [newFolderName, setNewFolderName] = useState('');
 
@@ -74,19 +78,20 @@ function App() {
 
   const [showProfileMenu, setShowProfileMenu] = useState(false);
 
-  const [showSupportChat, setShowSupportChat] = useState(false);
-
   const [showCoinsScreen, setShowCoinsScreen] = useState(false);
 
   const [showSettings, setShowSettings] = useState(false);
 
   const [coins, setCoins] = useState(100);
 
-
+  const [editingFolderId, setEditingFolderId] = useState<string | null>(null);
+  const [editingFolderName, setEditingFolderName] = useState('');
 
   const createFolderRef = useRef<HTMLDivElement>(null);
 
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const chatDropdownRef = useRef<HTMLDivElement>(null);
+
+  const folderDropdownRef = useRef<HTMLDivElement>(null);
 
   const editChatRef = useRef<HTMLInputElement>(null);
 
@@ -94,11 +99,15 @@ function App() {
 
 
 
+  const { t } = useLanguage();
+
+
+
   const handleNewChat = (addToFolder: boolean = false) => {
     const newChat: Chat = {
       id: String(Date.now()),
-      title: 'Nova conversa',
-      desc: 'Iniciando uma nova conversa...',
+      title: t('sidebar.newChat'),
+      desc: t('sidebar.chatDescriptions.starting'),
       createdAt: new Date(),
       updatedAt: new Date()
     };
@@ -139,7 +148,7 @@ function App() {
 
     }
 
-    setActiveDropdown(null);
+    setActiveFolderDropdown(null);
 
   };
 
@@ -267,7 +276,7 @@ function App() {
 
     });
 
-    setActiveDropdown(activeDropdown === chatId ? null : chatId);
+    setActiveChatDropdown(activeChatDropdown === chatId ? null : chatId);
 
   };
 
@@ -566,8 +575,8 @@ function App() {
         setIsCreatingFolder(false);
         setNewFolderName('');
       }
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setActiveDropdown(null);
+      if (folderDropdownRef.current && !folderDropdownRef.current.contains(event.target as Node)) {
+        setActiveFolderDropdown(null);
       }
       if (editChatRef.current && !editChatRef.current.contains(event.target as Node)) {
         setEditingChatId(null);
@@ -631,16 +640,40 @@ function App() {
     setShowWelcomeScreen(true);
   };
 
+  const handleRenameFolder = (folderId: string) => {
+    const folder = folders.find(f => f.id === folderId);
+    if (folder) {
+      setEditingFolderId(folderId);
+      setEditingFolderName(folder.name);
+    }
+  };
+
+  const handleSaveRenamedFolder = () => {
+    if (editingFolderId && editingFolderName.trim()) {
+      setFolders(folders.map(folder => 
+        folder.id === editingFolderId 
+          ? { ...folder, name: editingFolderName.trim() }
+          : folder
+      ));
+      setEditingFolderId(null);
+      setEditingFolderName('');
+    }
+  };
+
   if (showLanding) {
-    return <LandingPage onStartClick={handleStartClick} />;
+    return (
+      <LandingPage onStartClick={handleStartClick} />
+    );
   }
 
   if (showCoinsScreen) {
-    return <CoinsScreen 
-      onBack={() => setShowCoinsScreen(false)} 
-      currentCoins={coins}
-      onBuyCoins={(amount) => setCoins(coins + amount)}
-    />;
+    return (
+      <CoinsScreen 
+        onBack={() => setShowCoinsScreen(false)} 
+        currentCoins={coins}
+        onBuyCoins={(amount) => setCoins(coins + amount)}
+      />
+    );
   }
 
   return (
@@ -700,17 +733,20 @@ function App() {
               folders={filteredFolders}
               chats={filteredChats}
               selectedFolder={selectedFolder}
-              activeDropdown={activeDropdown}
+              activeChatDropdown={activeChatDropdown}
+              activeFolderDropdown={activeFolderDropdown}
               isCreatingFolder={isCreatingFolder}
               newFolderName={newFolderName}
               editingChatId={editingChatId}
               editingChatTitle={editingChatTitle}
               createFolderRef={createFolderRef}
-              dropdownRef={dropdownRef}
+              chatDropdownRef={chatDropdownRef}
+              folderDropdownRef={folderDropdownRef}
               editChatRef={editChatRef}
               onFolderClick={handleFolderClick}
               onDeleteFolder={handleDeleteFolder}
-              setActiveDropdown={setActiveDropdown}
+              setActiveChatDropdown={setActiveChatDropdown}
+              setActiveFolderDropdown={setActiveFolderDropdown}
               setIsCreatingFolder={setIsCreatingFolder}
               setNewFolderName={setNewFolderName}
               handleCreateFolder={handleCreateFolder}
@@ -722,6 +758,8 @@ function App() {
               searchQuery={searchQuery}
               onSearchChange={setSearchQuery}
               setShowSettings={setShowSettings}
+              onRenameFolder={handleRenameFolder}
+              onSaveRenamedFolder={handleSaveRenamedFolder}
             />
           </div>
         </div>
@@ -840,10 +878,6 @@ function App() {
                     ))}
                 </div>
               )}
-
-              <div className="mt-8">
-                <Footer />
-              </div>
             </div>
           ) : showWelcomeScreen ? (
             <div className="h-full lg:ml-0 ml-8">
@@ -853,10 +887,6 @@ function App() {
                 onSendMessage={handleSendMessage}
                 onKeyPress={handleKeyPress}
               />
-
-              <div className="mt-8">
-                <Footer />
-              </div>
             </div>
           ) : showChat && selectedChat ? (
             <>
@@ -1001,9 +1031,9 @@ function App() {
         </div>
       )}
 
-      {activeDropdown && (
+      {activeChatDropdown && (
         <div 
-          ref={dropdownRef}
+          ref={chatDropdownRef}
           className="fixed w-56 bg-[#252525] rounded-lg shadow-lg py-1 z-50 animate-fadeIn"
           style={{ 
             top: `${dropdownPosition.top}px`,
@@ -1013,12 +1043,12 @@ function App() {
         >
           <button
             onClick={() => {
-              const chat = chats.find(c => c.id === activeDropdown);
+              const chat = chats.find(c => c.id === activeChatDropdown);
               if (chat) {
                 setEditingChatId(chat.id);
                 setEditingChatTitle(chat.title);
               }
-              setActiveDropdown(null);
+              setActiveChatDropdown(null);
             }}
             className="w-full flex items-center space-x-2 px-3 py-2 hover:bg-[#353535] text-left text-sm text-gray-300 hover:text-gray-200 transition-colors"
           >
@@ -1039,20 +1069,20 @@ function App() {
 
             <div className="absolute left-full top-0 w-48 bg-[#252525] rounded-lg shadow-lg py-1 hidden group-hover:block ml-1">
               {folders
-                .filter(folder => !folder.chats.includes(activeDropdown))
+                .filter(folder => !folder.chats.includes(activeChatDropdown))
                 .map(folder => (
                   <button
                     key={folder.id}
                     onClick={() => {
-                      handleAddChatToFolder(activeDropdown, folder.id);
-                      setActiveDropdown(null);
+                      handleAddChatToFolder(activeChatDropdown, folder.id);
+                      setActiveChatDropdown(null);
                     }}
                     className="w-full flex items-center space-x-2 px-3 py-2 hover:bg-[#353535] text-left text-sm text-gray-300 hover:text-gray-200 transition-colors"
                   >
                     <span>{folder.name}</span>
                   </button>
                 ))}
-              {folders.filter(folder => !folder.chats.includes(activeDropdown)).length === 0 && (
+              {folders.filter(folder => !folder.chats.includes(activeChatDropdown)).length === 0 && (
                 <div className="px-3 py-2 text-sm text-gray-500">
                   Nenhuma pasta disponível
                 </div>
@@ -1062,8 +1092,8 @@ function App() {
 
           <button
             onClick={() => {
-              handleDeleteChat(activeDropdown);
-              setActiveDropdown(null);
+              handleDeleteChat(activeChatDropdown);
+              setActiveChatDropdown(null);
             }}
             className="w-full flex items-center space-x-2 px-3 py-2 hover:bg-[#353535] text-left text-sm text-red-400 hover:text-red-300 transition-colors"
           >
@@ -1078,13 +1108,10 @@ function App() {
         <button
           onClick={(e) => {
             e.stopPropagation();
-            if (showSupportChat) {
-              setShowSupportChat(false);
-              setTimeout(() => {
-                setShowProfileMenu(!showProfileMenu);
-              }, 200); // Pequeno delay para a animação de fechamento do chat
+            if (showProfileMenu) {
+              setShowProfileMenu(false);
             } else {
-              setShowProfileMenu(!showProfileMenu);
+              setShowProfileMenu(true);
             }
           }}
           className="p-2 bg-[#252525] rounded-lg hover:bg-[#353535] transition-colors border border-transparent hover:border-green-500/20"
@@ -1094,20 +1121,16 @@ function App() {
 
         {/* Profile Dropdown Menu */}
         {showProfileMenu && (
-          <div 
-            className="absolute right-0 mt-2 w-56 bg-[#1a1a1a] rounded-lg shadow-lg py-2 border border-[#252525]
-              animate-slideIn"
-          >
+          <div className="absolute right-0 mt-2 w-56 bg-[#1a1a1a] rounded-lg shadow-lg py-2 border border-[#252525] animate-slideIn">
             <button
               onClick={() => {
                 setShowCoinsScreen(true);
                 setShowProfileMenu(false);
               }}
-              className="w-full flex items-center space-x-3 px-5 py-3 text-sm text-gray-400 hover:bg-[#252525] hover:text-green-500
-                transition-all duration-200"
+              className="w-full flex items-center space-x-3 px-5 py-3 text-sm text-gray-400 hover:bg-[#252525] hover:text-green-500 transition-all duration-200"
             >
               <Coins className="w-4 h-4" />
-              <span>Moedas: {coins}</span>
+              <span>{t('common.profile.coins').replace('{0}', coins.toString())}</span>
             </button>
 
             <button
@@ -1118,40 +1141,21 @@ function App() {
               className="w-full flex items-center space-x-3 px-5 py-3 text-sm text-gray-400 hover:bg-[#252525] hover:text-green-500"
             >
               <Trash className="w-4 h-4" />
-              <span>Apagar todos os chats</span>
+              <span>{t('common.profile.deleteAllChats')}</span>
             </button>
 
             <button
               onClick={() => {
-                setShowSupportChat(true);
-                setShowProfileMenu(false);
-              }}
-              className="w-full flex items-center space-x-3 px-5 py-3 text-sm text-gray-400 hover:bg-[#252525] hover:text-green-500"
-            >
-              <Mail className="w-4 h-4" />
-              <span>Contate-nos</span>
-            </button>
-
-            <div className="border-t border-[#252525] my-2"></div>
-
-            <button
-              onClick={() => {
-                // Implementar lógica de logout
                 setShowProfileMenu(false);
               }}
               className="w-full flex items-center space-x-3 px-5 py-3 text-sm text-red-400 hover:bg-[#252525] hover:text-red-500"
             >
               <LogOut className="w-4 h-4" />
-              <span>Logout</span>
+              <span>{t('common.profile.logout')}</span>
             </button>
           </div>
         )}
       </div>
-
-      {/* Support Chat */}
-      {showSupportChat && (
-        <SupportChat onClose={() => setShowSupportChat(false)} />
-      )}
 
       {/* Settings Modal */}
       {showSettings && <SettingsModal onClose={() => setShowSettings(false)} />}
@@ -1159,6 +1163,12 @@ function App() {
   );
 }
 
-
-
-export default App;
+export default function AppWrapper() {
+  return (
+    <LanguageProvider>
+      <ThemeProvider>
+        <App />
+      </ThemeProvider>
+    </LanguageProvider>
+  );
+}

@@ -2,6 +2,7 @@ import React from 'react';
 import { GiCalendar, GiSoccerBall, GiTrophyCup } from 'react-icons/gi';
 import { HiOutlineSparkles } from 'react-icons/hi';
 import { MessageInput } from './MessageInput';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 interface WelcomeScreenProps {
   prompt: string;
@@ -10,30 +11,32 @@ interface WelcomeScreenProps {
   onKeyPress: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-const suggestions = [
-  {
-    icon: <GiCalendar className="w-5 h-5 text-green-500" />,
-    title: "Próxima Partida",
-    description: "Quando é a partida do Paris Saint-Germain?"
-  },
-  {
-    icon: <GiSoccerBall className="w-5 h-5 text-green-500" />,
-    title: "Probabilidades",
-    description: "Chances de vitória Paris Saint-Germain vs Manchester City"
-  },
-  {
-    icon: <GiTrophyCup className="w-5 h-5 text-green-500" />,
-    title: "Desempenho",
-    description: "Análise de desempenho Paris Saint-Germain vs Manchester City"
-  }
-];
-
 export function WelcomeScreen({
   prompt,
   onPromptChange,
   onSendMessage,
   onKeyPress,
 }: WelcomeScreenProps) {
+  const { t } = useLanguage();
+
+  const suggestions = [
+    {
+      icon: <GiCalendar className="w-5 h-5 text-green-500" />,
+      title: t('welcome.nextMatch'),
+      description: t('welcome.whenIsMatch')
+    },
+    {
+      icon: <GiSoccerBall className="w-5 h-5 text-green-500" />,
+      title: t('welcome.probabilities'),
+      description: t('welcome.winChances')
+    },
+    {
+      icon: <GiTrophyCup className="w-5 h-5 text-green-500" />,
+      title: t('welcome.performance'),
+      description: t('welcome.performanceAnalysis')
+    }
+  ];
+
   return (
     <div className="h-[calc(100vh-2rem)] flex flex-col items-center justify-center overflow-hidden relative">
       <div 
@@ -47,10 +50,10 @@ export function WelcomeScreen({
             <HiOutlineSparkles className="w-8 h-8 md:w-12 md:h-12 lg:w-14 lg:h-14 text-green-500" />
           </div>
           <h1 className="text-lg md:text-xl lg:text-3xl font-medium mb-2 text-gray-200 truncate max-w-full">
-            Como posso ajudar você hoje?
+            {t('welcome.title')}
           </h1>
           <p className="text-xs md:text-sm lg:text-base text-gray-400 mb-4">
-            Score AI está aqui para ajudar você com qualquer tarefa ou pergunta.
+            {t('welcome.subtitle')}
           </p>
 
           <div className="grid grid-cols-2 gap-2 mb-2">
@@ -106,7 +109,7 @@ export function WelcomeScreen({
               onPromptChange={onPromptChange}
               onSendMessage={onSendMessage}
               onKeyPress={onKeyPress}
-              placeholder="Digite sua mensagem aqui..."
+              placeholder={t('welcome.typeMessage')}
               iconColor="text-black"
             />
           </div>
@@ -114,7 +117,7 @@ export function WelcomeScreen({
       </div>
       
       <p className="text-center text-gray-500 text-xs sm:text-sm fixed bottom-2 lg:bottom-6 z-20">
-        Score AI pode cometer erros. Considere verificar informações importantes.
+        {t('welcome.disclaimer')}
       </p>
     </div>
   );

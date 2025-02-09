@@ -1,5 +1,6 @@
 import React from 'react';
-import { FolderClosed, MoreVertical, FolderOpen } from 'lucide-react';
+import { FolderClosed, MoreVertical, FolderOpen, Pencil, Trash2 } from 'lucide-react';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 interface FolderItemProps {
   folder: {
@@ -11,22 +12,27 @@ interface FolderItemProps {
   activeDropdown: string | null;
   onFolderClick: (id: string) => void;
   onDeleteFolder: (id: string) => void;
+  onRenameFolder: (id: string) => void;
   setActiveDropdown: (id: string | null) => void;
   dropdownRef: React.RefObject<HTMLDivElement>;
-  onMoreClick: (e: React.MouseEvent) => void;
 }
 
 export function FolderItem({
   folder,
   selectedFolder,
+  activeDropdown,
   onFolderClick,
-  onMoreClick,
+  onDeleteFolder,
+  onRenameFolder,
+  setActiveDropdown,
+  dropdownRef,
 }: FolderItemProps) {
+  const { t } = useLanguage();
   const isEmpty = folder.chats.length === 0;
 
-  const handleMoreClick = (e: React.MouseEvent) => {
+  const handleFolderMoreClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onMoreClick(e);
+    setActiveDropdown(activeDropdown === folder.id ? null : folder.id);
   };
 
   return (
@@ -80,13 +86,42 @@ export function FolderItem({
         </div>
 
         <button
-          onClick={handleMoreClick}
+          onClick={handleFolderMoreClick}
           className="p-1.5 rounded-lg hover:bg-[#353535] text-gray-400 hover:text-green-500 
             transition-all duration-200 opacity-60 hover:opacity-100 relative z-10"
         >
           <MoreVertical className="w-4 h-4" />
         </button>
       </div>
+
+      {activeDropdown === folder.id && (
+        <div 
+          ref={dropdownRef}
+          className="absolute right-0 mt-2 w-48 bg-[#252525] rounded-lg shadow-lg py-1 z-50 animate-fadeIn border border-[#353535]"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onRenameFolder(folder.id);
+            }}
+            className="w-full flex items-center space-x-2 px-3 py-2 hover:bg-[#353535] text-left text-sm text-gray-300 hover:text-gray-200 transition-colors"
+          >
+            <Pencil className="w-4 h-4" />
+            <span>{t('sidebar.folderActions.rename')}</span>
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onDeleteFolder(folder.id);
+            }}
+            className="w-full flex items-center space-x-2 px-3 py-2 hover:bg-[#353535] text-left text-sm text-red-400 hover:text-red-300 transition-colors"
+          >
+            <Trash2 className="w-4 h-4" />
+            <span>{t('sidebar.folderActions.delete')}</span>
+          </button>
+        </div>
+      )}
     </div>
   );
 }

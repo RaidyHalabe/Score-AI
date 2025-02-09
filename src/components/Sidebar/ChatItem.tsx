@@ -1,6 +1,7 @@
 import React from 'react';
-import { MessageSquare, MoreVertical } from 'lucide-react';
+import { MessageSquare, MoreVertical, Pencil, Trash2, FolderPlus } from 'lucide-react';
 import { Chat } from '../../types';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 interface ChatItemProps {
   chat: Chat;
@@ -10,6 +11,8 @@ interface ChatItemProps {
   onRenameChat: (id: string) => void;
   setEditingChatTitle: (title: string) => void;
   handleMoreClick: (e: React.MouseEvent, id: string) => void;
+  activeDropdown: string | null;
+  dropdownRef: React.RefObject<HTMLDivElement>;
 }
 
 export function ChatItem({
@@ -20,9 +23,18 @@ export function ChatItem({
   onRenameChat,
   setEditingChatTitle,
   handleMoreClick,
+  activeDropdown,
+  dropdownRef,
 }: ChatItemProps) {
+  const { t } = useLanguage();
+
+  const handleChatMoreClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    handleMoreClick(e, chat.id);
+  };
+
   return (
-    <div className="group flex items-center justify-between p-2 rounded-lg cursor-pointer hover:bg-[#252525] transition-all duration-200">
+    <div className="group relative flex items-center justify-between p-2 rounded-lg cursor-pointer hover:bg-[#252525] transition-all duration-200">
       <div className="flex items-center space-x-2.5 flex-1 min-w-0">
         <div className="flex items-center justify-center w-6 h-6 rounded bg-[#252525] group-hover:bg-[#353535] transition-colors">
           <MessageSquare className="w-4 h-4 text-green-500" />
@@ -53,14 +65,11 @@ export function ChatItem({
       </div>
 
       <button
-        onClick={(e) => {
-          e.stopPropagation();
-          handleMoreClick(e, chat.id);
-        }}
+        onClick={handleChatMoreClick}
         className="p-1.5 rounded-lg hover:bg-[#353535] text-gray-400 hover:text-green-500 
-          transition-all duration-200 opacity-60 hover:opacity-100 relative z-10"
+          transition-all duration-200 opacity-60 hover:opacity-100 relative z-10 bg-transparent"
       >
-        <MoreVertical className="w-4 h-4" />
+        <MoreVertical className="w-4 h-4 opacity-80" />
       </button>
     </div>
   );
