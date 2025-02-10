@@ -1,5 +1,5 @@
 import React from 'react';
-import { FolderClosed, MoreVertical, FolderOpen, Pencil, Trash2 } from 'lucide-react';
+import { FolderClosed, MoreVertical, FolderOpen, Trash2 } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
 
 interface FolderItemProps {
@@ -12,7 +12,6 @@ interface FolderItemProps {
   activeDropdown: string | null;
   onFolderClick: (id: string) => void;
   onDeleteFolder: (id: string) => void;
-  onRenameFolder: (id: string) => void;
   setActiveDropdown: (id: string | null) => void;
   dropdownRef: React.RefObject<HTMLDivElement>;
 }
@@ -23,7 +22,6 @@ export function FolderItem({
   activeDropdown,
   onFolderClick,
   onDeleteFolder,
-  onRenameFolder,
   setActiveDropdown,
   dropdownRef,
 }: FolderItemProps) {
@@ -100,16 +98,6 @@ export function FolderItem({
           className="absolute right-0 mt-2 w-48 bg-[#252525] rounded-lg shadow-lg py-1 z-50 animate-fadeIn border border-[#353535]"
           onClick={(e) => e.stopPropagation()}
         >
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onRenameFolder(folder.id);
-            }}
-            className="w-full flex items-center space-x-2 px-3 py-2 hover:bg-[#353535] text-left text-sm text-gray-300 hover:text-gray-200 transition-colors"
-          >
-            <Pencil className="w-4 h-4" />
-            <span>{t('sidebar.folderActions.rename')}</span>
-          </button>
           <button
             onClick={(e) => {
               e.stopPropagation();

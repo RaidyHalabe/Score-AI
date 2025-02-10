@@ -49,8 +49,7 @@ export const translations = {
       english: "English",
       portuguese: "Portuguese",
       dark: "Dark",
-      light: "Light",
-      coins: "Coins",
+      coinsLabel: "Coins",
       deleteAllChats: "Delete all chats",
       contactUs: "Contact us",
       logout: "Logout",
@@ -94,7 +93,7 @@ export const translations = {
       apiPricing: "API Pricing",
       serviceStatus: "Service Status",
       privacyPolicy: "Privacy Policy",
-      termsOfUse: "Terms of Use",
+      terms: "Terms of Use",
       reportVulnerabilities: "Report Vulnerabilities",
       copyright: "© 2024 Score AI. All rights reserved."
     }
@@ -149,8 +148,7 @@ export const translations = {
       english: "Inglês",
       portuguese: "Português",
       dark: "Escuro",
-      light: "Claro",
-      coins: "Moedas",
+      coinsLabel: "Moedas",
       deleteAllChats: "Apagar todos os chats",
       contactUs: "Contate-nos",
       logout: "Sair",
@@ -194,7 +192,7 @@ export const translations = {
       apiPricing: "Preços da API",
       serviceStatus: "Status do serviço",
       privacyPolicy: "Política de Privacidade",
-      termsOfUse: "Termos de Uso",
+      terms: "Termos de Uso",
       reportVulnerabilities: "Relatar vulnerabilidades",
       copyright: "© 2024 Score AI. Todos os direitos reservados."
     }

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { MessageSquare, MoreVertical, Pencil, Trash2, FolderPlus } from 'lucide-react';
 import { Chat } from '../../types';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { useClickOutside } from '../../hooks/useClickOutside';
 
 interface ChatItemProps {
   chat: Chat;
@@ -27,6 +28,12 @@ export function ChatItem({
   dropdownRef,
 }: ChatItemProps) {
   const { t } = useLanguage();
+
+  useClickOutside([dropdownRef], () => {
+    if (activeDropdown === chat.id) {
+      handleMoreClick(new MouseEvent('click') as any, chat.id);
+    }
+  }, [activeDropdown, chat.id]);
 
   const handleChatMoreClick = (e: React.MouseEvent) => {
     e.stopPropagation();

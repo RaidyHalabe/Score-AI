@@ -108,7 +108,9 @@ export function Sidebar({
   }, [showChats, chats]);
 
   return (
-    <div className="w-80 flex flex-col h-[calc(100vh-2rem)] bg-[#1a1a1a] rounded-2xl overflow-hidden z-10 sticky top-4">
+    <div 
+      className="w-[280px] sm:w-80 flex flex-col h-[calc(100vh-2rem)] bg-[#1a1a1a] rounded-2xl overflow-hidden z-10 sticky top-4"
+    >
       <div className="flex items-center justify-between px-3 py-2.5 border-b border-[#252525]">
         <div className="flex items-center space-x-2">
           <RiRobot2Line className="w-7 h-7 icon-sparkles-white" />

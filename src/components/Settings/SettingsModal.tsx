@@ -72,7 +72,6 @@ export const SettingsModal = ({ onClose }: SettingsModalProps) => {
                   className="bg-[#2b2b2b] text-sm text-[#f5f5f5] px-4 py-1.5 rounded-md outline-none cursor-pointer"
                 >
                   <option value="dark">{t('common.dark')}</option>
-                  <option value="light">{t('common.light')}</option>
                 </select>
               </div>
             </div>

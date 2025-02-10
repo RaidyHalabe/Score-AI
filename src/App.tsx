@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, KeyboardEvent, useMemo } from 'react';
 
-import { Save, Share, ArrowLeft, Plus, MessageSquare, X, Pencil, FolderPlus, ChevronRight, Trash2, Calendar, Clock, User, Coins, Trash, LogOut } from 'lucide-react';
+import { ArrowLeft, Plus, MessageSquare, X, Pencil, FolderPlus, ChevronRight, Trash2, Calendar, Clock, User, Coins, Trash, LogOut } from 'lucide-react';
 
 import { Message, Folder, Chat } from './types';
 
@@ -185,29 +185,12 @@ function App() {
 
 
   const handleDeleteChat = (chatId: string) => {
-
-    setFolders(folders.map(folder => ({
-
-      ...folder,
-
-      chats: folder.chats.filter(id => id !== chatId)
-
-    })));
-
-
-
     setChats(chats.filter(chat => chat.id !== chatId));
-
-
-
     if (selectedChat?.id === chatId) {
-
       setSelectedChat(null);
-
       setShowChat(false);
-
+      setShowWelcomeScreen(true);
     }
-
   };
 
 
@@ -677,38 +660,7 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-gray-200 relative p-4">
-      {/* Menu button for mobile */}
-      <button 
-        className="lg:hidden fixed top-5 left-6 z-50 p-2 bg-[#252525] rounded-lg hover:bg-[#353535] 
-          transition-all duration-300 shadow-lg hover:shadow-green-500/20 border border-transparent 
-          hover:border-green-500/20"
-        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-      >
-        <svg 
-          className={`w-5 h-5 transition-all duration-300 ease-in-out ${
-            isSidebarOpen 
-              ? 'text-green-500 rotate-90 hover:text-green-400' 
-              : 'text-gray-400 rotate-0 hover:text-green-500'
-          }`} 
-          viewBox="0 0 24 24"
-        >
-          {isSidebarOpen ? (
-            // Ícone X quando menu está aberto
-            <path 
-              fill="currentColor" 
-              d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"
-            />
-          ) : (
-            // Ícone de menu quando está fechado
-            <path 
-              fill="currentColor" 
-              d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"
-            />
-          )}
-        </svg>
-      </button>
-
+    <div className="fixed inset-0 bg-black text-gray-200 overflow-hidden">
       {/* Background effects */}
       <div className="absolute inset-0">
         <div className="absolute left-0 bottom-0 w-[500px] h-[500px] bg-green-500/20 blur-[120px] rounded-full" />
@@ -716,11 +668,11 @@ function App() {
       </div>
 
       {/* Main container */}
-      <div className="relative z-10 flex gap-4 max-w-[1850px] mx-auto h-[calc(100vh-2rem)]">
+      <div className="relative z-10 flex gap-2 sm:gap-4 max-w-[1850px] mx-auto h-screen p-4">
         {/* Sidebar */}
         <div 
           className={`
-            fixed lg:relative lg:block flex-shrink-0 lg:pl-6 z-50
+            fixed lg:relative lg:block flex-shrink-0 lg:pl-2 xl:pl-6 z-50
             transform transition-all duration-300 ease-in-out
             ${isSidebarOpen 
               ? 'translate-x-0 opacity-100' 
@@ -728,7 +680,7 @@ function App() {
             }
           `}
         >
-          <div className="w-80 flex flex-col h-[calc(100vh-2rem)] bg-[#1a1a1a] rounded-2xl overflow-hidden z-10 sticky top-4">
+          <div className="w-80 flex flex-col h-[calc(100vh-2rem)] bg-[#1a1a1a] rounded-2xl overflow-hidden z-10 mt-2">
             <Sidebar
               folders={filteredFolders}
               chats={filteredChats}
@@ -773,7 +725,7 @@ function App() {
         )}
 
         {/* Content Area */}
-        <div className="flex-1 relative flex flex-col max-w-[1450px] mx-auto w-full">
+        <div className="flex-1 relative flex flex-col max-w-[1450px] mx-auto w-full mt-12 lg:mt-0">
           {selectedFolder && !showChat ? (
             <div className="h-full overflow-y-auto lg:ml-0 ml-0">
               <div className="flex items-center justify-between mb-8 mt-1.5 ml-14">
@@ -913,14 +865,7 @@ function App() {
                     <Coins className="w-4 h-4 text-green-500" />
                     <span className="text-sm text-gray-300">{coins}</span>
                   </div>
-                  <div className="flex space-x-2">
-                    <button className="p-2 hover:bg-[#252525] rounded-lg transition-colors">
-                      <Save className="w-5 h-5 text-gray-400" />
-                    </button>
-                    <button className="p-2 hover:bg-[#252525] rounded-lg transition-colors">
-                      <Share className="w-5 h-5 text-gray-400" />
-                    </button>
-                  </div>
+                  <div className="w-4"></div>
                 </div>
               </div>
 
@@ -1104,7 +1049,7 @@ function App() {
       )}
 
       {/* Profile button for mobile */}
-      <div className="fixed top-5 right-6 z-50 profile-menu">
+      <div className="fixed top-4 right-6 z-50 profile-menu">
         <button
           onClick={(e) => {
             e.stopPropagation();

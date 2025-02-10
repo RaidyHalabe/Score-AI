@@ -40,8 +40,8 @@ export function WelcomeScreen({
   return (
     <div className="h-[calc(100vh-2rem)] flex flex-col items-center justify-center overflow-hidden relative">
       <div 
-        className="max-w-[85%] lg:max-w-[800px] xl:max-w-[1000px] w-full 
-        min-h-[480px] bg-[#1a1a1a] rounded-xl p-4 sm:p-6 xl:p-8 text-center relative z-20 shadow-xl"
+        className="w-[95%] sm:w-[85%] lg:max-w-[800px] xl:max-w-[1000px]
+        min-h-[480px] bg-[#1a1a1a] rounded-xl p-3 sm:p-6 xl:p-8 text-center relative z-20 shadow-xl"
       >
         <div className="absolute inset-0 bg-gradient-to-b from-green-500/10 via-transparent to-transparent rounded-xl opacity-25 mix-blend-normal" />
         <div className="absolute inset-0 bg-[#1a1a1a] rounded-xl" />
@@ -64,7 +64,7 @@ export function WelcomeScreen({
                   onPromptChange(suggestion.description);
                   onSendMessage();
                 }}
-                className="flex flex-col items-center p-3 bg-[#252525] rounded-lg hover:bg-[#353535] transition-colors group h-[120px] sm:h-[130px] lg:h-[110px]"
+                className="flex flex-col items-center p-2 sm:p-3 bg-[#252525] rounded-lg hover:bg-[#353535] transition-colors group h-[100px] sm:h-[130px] lg:h-[110px]"
               >
                 <div className="mb-1.5">
                   {React.cloneElement(suggestion.icon, { 

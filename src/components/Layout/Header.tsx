@@ -1,0 +1,1 @@
+  <span>{t('common.coinsLabel')}</span> 

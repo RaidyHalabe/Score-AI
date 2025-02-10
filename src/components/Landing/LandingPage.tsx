@@ -89,10 +89,10 @@ export const LandingPage = ({ onStartClick }: { onStartClick: () => void }) => {
               <div>
                 <h3 className="text-white font-medium mb-4">{t('landing.research')}</h3>
                 <ul className="space-y-2">
-                  <li>{t('landing.masteringAI')}</li>
-                  <li>{t('landing.scoreAICoder')}</li>
-                  <li>{t('landing.scoreAIMath')}</li>
-                  <li>{t('landing.scoreAIV3')}</li>
+                  <li><a href="#" className="text-sm text-[#A3A3A3] hover:text-green-500 transition-colors">{t('landing.masteringAI')}</a></li>
+                  <li><a href="#" className="text-sm text-[#A3A3A3] hover:text-green-500 transition-colors">{t('landing.scoreAICoder')}</a></li>
+                  <li><a href="#" className="text-sm text-[#A3A3A3] hover:text-green-500 transition-colors">{t('landing.scoreAIMath')}</a></li>
+                  <li><a href="#" className="text-sm text-[#A3A3A3] hover:text-green-500 transition-colors">{t('landing.scoreAIV3')}</a></li>
                 </ul>
               </div>
 
@@ -100,10 +100,10 @@ export const LandingPage = ({ onStartClick }: { onStartClick: () => void }) => {
               <div>
                 <h3 className="text-white font-medium mb-4">{t('landing.product')}</h3>
                 <ul className="space-y-2">
-                  <li><a href="#" className="text-sm text-gray-400 hover:text-green-500">{t('landing.scoreAIApp')}</a></li>
-                  <li><a href="#" className="text-sm text-gray-400 hover:text-green-500">{t('landing.scoreAIPlatform')}</a></li>
-                  <li><a href="#" className="text-sm text-gray-400 hover:text-green-500">{t('landing.apiPricing')}</a></li>
-                  <li><a href="#" className="text-sm text-gray-400 hover:text-green-500">{t('landing.serviceStatus')}</a></li>
+                  <li><a href="#" className="text-sm text-[#A3A3A3] hover:text-green-500 transition-colors">{t('landing.scoreAIApp')}</a></li>
+                  <li><a href="#" className="text-sm text-[#A3A3A3] hover:text-green-500 transition-colors">{t('landing.scoreAIPlatform')}</a></li>
+                  <li><a href="#" className="text-sm text-[#A3A3A3] hover:text-green-500 transition-colors">{t('landing.apiPricing')}</a></li>
+                  <li><a href="#" className="text-sm text-[#A3A3A3] hover:text-green-500 transition-colors">{t('landing.serviceStatus')}</a></li>
                 </ul>
               </div>
 
@@ -111,9 +111,9 @@ export const LandingPage = ({ onStartClick }: { onStartClick: () => void }) => {
               <div>
                 <h3 className="text-white font-medium mb-4">{t('landing.legal')}</h3>
                 <ul className="space-y-2">
-                  <li><a href="#" className="text-sm text-gray-400 hover:text-green-500">{t('landing.privacyPolicy')}</a></li>
-                  <li><a href="#" className="text-sm text-gray-400 hover:text-green-500">{t('landing.termsOfUse')}</a></li>
-                  <li><a href="#" className="text-sm text-gray-400 hover:text-green-500">{t('landing.reportVulnerabilities')}</a></li>
+                  <li><a href="#" className="text-sm text-[#A3A3A3] hover:text-green-500 transition-colors">{t('landing.privacyPolicy')}</a></li>
+                  <li><a href="#" className="text-sm text-[#A3A3A3] hover:text-green-500 transition-colors">{t('landing.terms')}</a></li>
+                  <li><a href="#" className="text-sm text-[#A3A3A3] hover:text-green-500 transition-colors">{t('landing.reportVulnerabilities')}</a></li>
                 </ul>
               </div>
             </div>
